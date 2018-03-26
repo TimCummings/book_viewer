@@ -2,10 +2,10 @@
 
 <div class="pure-menu">
   <ul class="pure-menu-list">
-    <% @toc.each_with_index do |chapter, idx| %>
+    <% each_chapter do |chapter| %>
       <li class="pure-menu-item">
-        <a href="/chapters/<%= idx + 1 %>" class="pure-menu-link">
-            <%= "#{idx + 1}: #{chapter}" %>
+        <a href="/chapters/<%= chapter[:number] %>" class="pure-menu-link">
+            <%= "#{chapter[:number]}: #{chapter[:name]}" %>
         </a>
       </li>
     <% end %>
