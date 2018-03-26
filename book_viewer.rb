@@ -34,6 +34,19 @@ get "/chapters/:number" do
   erb :chapter
 end
 
+get "/search" do
+  unless params[:query].nil? || params[:query].empty?
+    @search_results = {}
+    @toc.each_with_index do |chapter, idx|
+      if File.read("data/chp#{idx + 1}.txt") =~ /#{params[:query]}/
+        @search_results[idx + 1] = chapter
+      end
+    end
+  end
+
+  erb :search
+end
+
 not_found do
   redirect '/'
 end
