@@ -35,18 +35,30 @@ get "/chapters/:number" do
 end
 
 get "/search" do
-  unless params[:query].nil? || params[:query].empty?
-    @search_results = {}
-    @toc.each_with_index do |chapter, idx|
-      if File.read("data/chp#{idx + 1}.txt") =~ /#{params[:query]}/
-        @search_results[idx + 1] = chapter
-      end
-    end
-  end
-
+  @search_results = chapters_matching(params[:query])
   erb :search
 end
 
 not_found do
   redirect '/'
+end
+
+def chapters_matching(query)
+  return [] if !query || query.empty?
+
+  each_chapter.with_object([]) do |chapter, results|
+    results << chapter if chapter[:contents].include? query
+  end
+end
+
+def each_chapter
+  return enum_for(:each_chapter) unless block_given?
+
+  @toc.each_with_index do |name, idx|
+    chapter = {}
+    chapter[:number] = idx + 1
+    chapter[:name] = name
+    chapter[:contents] = File.read("data/chp#{chapter[:number]}.txt")
+    yield chapter
+  end
 end

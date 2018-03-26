@@ -5,16 +5,14 @@
   <button type="submit">Search</button>
 </form>
 
-<% unless params[:query].nil? || params[:query].empty? %>
-  <h2 class="content-subhead">Results for <%= params[:query] %></h2>
-
+<% if params[:query] && !params[:query].empty? %>
   <% if @search_results.empty? %>
     <p>Sorry, no matches were found.</p>
   <% else %>
     <ul>
-      <% @search_results.each do |chapter_num, chapter| %>
-        <li><a href="/chapters/<%= chapter_num %>">
-          <%= "#{chapter_num}: #{chapter}" %>
+      <% @search_results.each do |chapter| %>
+        <li><a href="/chapters/<%= chapter[:number] %>">
+          <%= "#{chapter[:number]}: #{chapter[:name]}" %>
         </a></li>
       <% end %>
     </ul>
