@@ -9,17 +9,22 @@
   <% if @search_results.empty? %>
     <p>Sorry, no matches were found.</p>
   <% else %>
+    <h2 class="content-subhead">Results for '<%= params[:query] %>'</h2>
+
     <ul>
       <% @search_results.each do |chapter, paragraph_results| %>
-        <li><%= chapter %></li>
-        <ul>
-          <% paragraph_results.each do |id, paragraph| %>
-            <li><a href=<%= "/chapters/#{chapter.number}#p#{id}" %>>
-              <%= paragraph %>
-            </a></li>
-          <% end %>
-        </ul>
+        <li>
+          <h4><%= chapter %></h4>
+          <ul>
+            <% paragraph_results.each do |id, paragraph| %>
+              <li><a href="/chapters/<%= chapter.number %>#p<%= id %>">
+                  <%= paragraph %>
+              </a></li>
+            <% end %>
+          </ul>
+        </li>
       <% end %>
     </ul>
+
   <% end %>
 <% end %>
