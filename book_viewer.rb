@@ -6,8 +6,8 @@ require "sinatra/reloader"
 
 helpers do
   def in_paragraphs(text)
-    text.split("\n\n").map do |paragraph|
-      '<p>' + paragraph + '</p>'
+    text.split("\n\n").map.with_index do |paragraph, idx|
+      "<p id=p#{idx + 1}>" + paragraph + "</p>"
     end.join
   end
 end
