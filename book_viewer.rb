@@ -1,8 +1,10 @@
 # book_viewer.rb
 
-require "tilt/erubis"
-require "sinatra"
-require "sinatra/reloader"
+require 'tilt/erubis'
+require 'sinatra'
+require 'sinatra/reloader'
+
+require_relative 'chapter'
 
 helpers do
   def in_paragraphs(text)
@@ -13,24 +15,21 @@ helpers do
 end
 
 before do
-  @toc = File.readlines "data/toc.txt"
+  toc = File.readlines("data/toc.txt")
+  @chapters = toc.each_with_index.with_object([]) do |(name, idx), chapters|
+    chapters << Chapter.new(name, idx + 1)
+  end
 end
 
 get "/" do
   @title = "Book Viewer"
-
   erb :home
 end
 
 get "/chapters/:number" do
   chapter_num = params[:number].to_i
-
-  redirect '/' unless (1..@toc.size).cover? chapter_num
-
-  chapter_name = @toc[chapter_num - 1]
-  @title = "Chapter #{chapter_num}: #{chapter_name}"
-  @text = File.read "data/chp#{chapter_num}.txt"
-
+  redirect '/' unless (1..@chapters.size).cover? chapter_num
+  @chapter = @chapters[chapter_num - 1]
   erb :chapter
 end
 
@@ -46,19 +45,7 @@ end
 def chapters_matching(query)
   return [] if !query || query.empty?
 
-  each_chapter.with_object([]) do |chapter, results|
-    results << chapter if chapter[:contents].include? query
-  end
-end
-
-def each_chapter
-  return enum_for(:each_chapter) unless block_given?
-
-  @toc.each_with_index do |name, idx|
-    chapter = {}
-    chapter[:number] = idx + 1
-    chapter[:name] = name
-    chapter[:contents] = File.read("data/chp#{chapter[:number]}.txt")
-    yield chapter
+  @chapters.each.with_object([]) do |chapter, results|
+    results << chapter if chapter.content.include? query
   end
 end

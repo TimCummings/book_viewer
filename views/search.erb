@@ -11,8 +11,8 @@
   <% else %>
     <ul>
       <% @search_results.each do |chapter| %>
-        <li><a href="/chapters/<%= chapter[:number] %>">
-          <%= "#{chapter[:number]}: #{chapter[:name]}" %>
+        <li><a href="/chapters/<%= chapter.number %>">
+          <%= "#{chapter.number}: #{chapter.title}" %>
         </a></li>
       <% end %>
     </ul>

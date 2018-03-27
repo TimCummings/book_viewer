@@ -23,10 +23,10 @@
               <a class="pure-menu-heading" href="/">Table of Contents</a>
 
               <ul class="pure-menu-list">
-                <% each_chapter do |chapter| %>
+                <% @chapters.each do |chapter| %>
                   <li class="pure-menu-item">
-                    <a href="/chapters/<%= chapter[:number] %>" class="pure-menu-link">
-                        <%= "#{chapter[:number]}: #{chapter[:name]}" %>
+                    <a href="/chapters/<%= chapter.number %>" class="pure-menu-link">
+                        <%= "#{chapter.number}: #{chapter.title}" %>
                     </a>
                   </li>
                 <% end %>
