@@ -16,8 +16,10 @@ end
 
 before do
   toc = File.readlines("data/toc.txt")
-  @chapters = toc.each_with_index.with_object([]) do |(name, idx), chapters|
-    chapters << Chapter.new(name, idx + 1)
+  @chapters = []
+
+  toc.each_with_index do |name, idx|
+    @chapters << Chapter.new(name, idx + 1)
   end
 end
 
@@ -45,7 +47,18 @@ end
 def chapters_matching(query)
   return [] if !query || query.empty?
 
-  @chapters.each.with_object([]) do |chapter, results|
-    results << chapter if chapter.content.include? query
+  results = @chapters.each_with_object([]) do |chapter, chapter_results|
+    paragraph_results = paragraphs_matching(chapter, query)
+    next if paragraph_results.empty?
+    chapter_results << [chapter, paragraph_results]
   end
+end
+
+def paragraphs_matching(chapter, query)
+  results = {}
+  chapter.paragraphs.each_with_index do |paragraph, idx|
+    results[idx + 1] = paragraph if paragraph.include? query
+  end
+
+  results
 end

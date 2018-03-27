@@ -13,7 +13,7 @@ class Chapter
   end
 
   def paragraphs
-    contents.split("\n\n")
+    content.split("\n\n")
   end
 
   def to_s

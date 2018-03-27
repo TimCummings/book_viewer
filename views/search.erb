@@ -10,10 +10,15 @@
     <p>Sorry, no matches were found.</p>
   <% else %>
     <ul>
-      <% @search_results.each do |chapter| %>
-        <li><a href="/chapters/<%= chapter.number %>">
-          <%= "#{chapter.number}: #{chapter.title}" %>
-        </a></li>
+      <% @search_results.each do |chapter, paragraph_results| %>
+        <li><%= chapter %></li>
+        <ul>
+          <% paragraph_results.each do |id, paragraph| %>
+            <li><a href=<%= "/chapters/#{chapter.number}#p#{id}" %>>
+              <%= paragraph %>
+            </a></li>
+          <% end %>
+        </ul>
       <% end %>
     </ul>
   <% end %>
