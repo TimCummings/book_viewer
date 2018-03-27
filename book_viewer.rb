@@ -12,6 +12,10 @@ helpers do
       "<p id=p#{idx + 1}>" + paragraph + "</p>"
     end.join
   end
+
+  def highlight_matches(text, query)
+    text.gsub query, "<strong>#{query}</strong>"
+  end
 end
 
 before do
