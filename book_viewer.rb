@@ -2,7 +2,7 @@
 
 require 'tilt/erubis'
 require 'sinatra'
-require 'sinatra/reloader'
+require 'sinatra/reloader' if development?
 
 require_relative 'chapter'
 
